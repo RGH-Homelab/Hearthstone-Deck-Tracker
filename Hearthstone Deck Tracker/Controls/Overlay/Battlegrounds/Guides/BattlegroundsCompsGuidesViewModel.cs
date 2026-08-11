@@ -122,7 +122,7 @@ public class BattlegroundsCompsGuidesViewModel : ViewModel
 			var compsData = await ApiWrapper.GetCompsGuides(Helper.GetCardLanguage());
 			var viewModelData = compsData?
 				.OrderBy(comp => comp.Name)
-				.Select(comp => new BattlegroundsCompGuideViewModel(comp))
+				.Select(comp => new BattlegroundsCompGuideViewModel(comp, IsPreLobby))
 				.ToList();
 			return viewModelData;
 		}
@@ -156,7 +156,7 @@ public class BattlegroundsCompsGuidesViewModel : ViewModel
 				var tier = tierEntry.Key;
 				var comps = tierEntry.Value.OrderBy(comp => comp.TierRank).ToList();
 
-				var viewModels = comps.Select(comp => new BattlegroundsCompGuideViewModel(comp)).ToList();
+				var viewModels = comps.Select(comp => new BattlegroundsCompGuideViewModel(comp, false)).ToList();
 
 				result[tier] = new TieredComps
 				{
@@ -216,8 +216,27 @@ public class BattlegroundsCompsGuidesViewModel : ViewModel
 		}
 	}
 
+	public bool IsPreLobby
+	{
+		get => GetProp(false);
+		private set
+		{
+			SetProp(value);
+			OnPropertyChanged(nameof(ModeBadgeVisibility));
+		}
+	}
+
+	public Visibility ModeBadgeVisibility => IsPreLobby ? Visibility.Collapsed : Visibility.Visible;
+
 	public async void OnMatchStart()
 	{
+		if(IsPreLobby)
+		{
+			IsPreLobby = false;
+			// the guides are rebuilt below, so a comp selected in the lobby would point at a stale view model
+			SelectedComp = null;
+		}
+
 		if(Core.Game.Spectator)
 			await Task.Delay(1500);
 
@@ -225,6 +244,38 @@ public class BattlegroundsCompsGuidesViewModel : ViewModel
 		{
 			await _updateCompGuidesSemaphore.WaitAsync();
 			await UpdateCompGuides();
+		}
+		finally
+		{
+			_updateCompGuidesSemaphore.Release();
+		}
+	}
+
+	// the pre-lobby always shows the unfiltered (free) list, there is no premium variant outside of a match
+	public async void OnPreLobby()
+	{
+		IsPreLobby = true;
+		try
+		{
+			await _updateCompGuidesSemaphore.WaitAsync();
+			CompsByTier = null;
+			SelectedComp = null;
+
+			try
+			{
+				var guides = await GetCompGuides();
+				if(guides is not null)
+				{
+					Comps = guides;
+					HasError = false;
+				}
+				else
+					HandleCompGuidesError("NoData", "Comp guides request returned no data");
+			}
+			catch(Exception e)
+			{
+				HandleCompGuidesError(e.GetType().Name, e.Message);
+			}
 		}
 		finally
 		{
@@ -301,6 +352,7 @@ public class BattlegroundsCompsGuidesViewModel : ViewModel
 	public void OnMatchEnd()
 	{
 		CompsByTier = null;
+		SelectedComp = null;
 		HasError = false;
 		HasRetriedAndFailed = false;
 	}

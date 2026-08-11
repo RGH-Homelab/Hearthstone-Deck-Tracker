@@ -1,3 +1,7 @@
+## Unreleased
+**Battlegrounds**:
+- Made the Minion Browser and Composition tabs available on the Battlegrounds screen before starting a game.
+
 ## **Release v1.55.6 - 2026-08-13**
 **General**:
 - We're improving our automatic update system and as such, users on old installations of Hearthstone Deck Tracker might see a prompt to reinstall the deck tracker. Nothing is changing for existing users on modern installs.\

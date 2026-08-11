@@ -35,7 +35,7 @@
                         FontFamily="/HearthstoneDeckTracker;component/Resources/#Chunkfive"
                         Visibility="Visible"
                     />
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding ModeBadgeVisibility}">
                         <Border
                             Visibility="{Binding Tier7FeatureVisibility}"
                             Padding="8 4"

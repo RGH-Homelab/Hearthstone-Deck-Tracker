@@ -33,6 +33,19 @@ public class BattlegroundsGuidesTabsViewModel : ViewModel
 		}
 	}
 
+	public bool IsPreLobby
+	{
+		get => GetProp(false);
+		set
+		{
+			SetProp(value);
+			OnPropertyChanged(nameof(HeroesTabEnabled));
+		}
+	}
+
+	// there are no heroes to guide before a match has started
+	public bool HeroesTabEnabled => !IsPreLobby;
+
 	public bool HasQuests
 	{
 		get => GetProp(false);
