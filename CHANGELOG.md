@@ -1,6 +1,7 @@
-## Unreleased
+## **Release v1.55.7 - 2026-08-13**
 **Battlegrounds**:
 - Made the Minion Browser and Composition tabs available on the Battlegrounds screen before starting a game.
+- Fixed a number of incorrect combat odds.
 
 ## **Release v1.55.6 - 2026-08-13**
 **General**:
