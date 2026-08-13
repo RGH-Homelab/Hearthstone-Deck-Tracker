@@ -395,40 +395,60 @@ namespace Hearthstone_Deck_Tracker
 		}
 
 		private static async void UpdateOverlayAsync()
-		{
+{
+        Log.Info("PROTON TRACE 01: Entered UpdateOverlayAsync");
+
 #if(!SQUIRREL)
-                // Disabled for Proton compatibility test build.
-                // Custom portable builds must not invoke the HDT updater.
+        // Disabled for Proton compatibility test build.
+        // Custom portable builds must not invoke the HDT updater.
 #endif
-			var hsForegroundChanged = false;
-			while(_updateOverlay)
-			{
+
+        Log.Info("PROTON TRACE 02: Passed updater block");
+
+        var hsForegroundChanged = false;
+
+        Log.Info("PROTON TRACE 03: Before overlay while loop");
+
+        while(_updateOverlay)
+        {
+                Log.Info("PROTON TRACE 04: Entered overlay while loop");
 				// Disabled for Proton compatibility test build.
                                 // Updater.CheckForUpdates();
 				if(User32.GetHearthstoneWindow() != IntPtr.Zero)
 				{
-					if(Game.CurrentRegion == Region.UNKNOWN)
-					{
-						//game started
-						Helper.VerifyHearthstonePath();
+					Log.Info("PROTON TRACE 05: Before region handling");
 
-						Helper.UpdateCardLanguage();
+if(Game.CurrentRegion == Region.UNKNOWN)
+{
+        Log.Info("PROTON TRACE 06: Region unknown");
 
-						AssetDownloaders.cardImageDownloader?.InvalidateCachedAssets();
-						AssetDownloaders.cardTileDownloader?.InvalidateCachedAssets();
-						AssetDownloaders.cardPortraitDownloader?.InvalidateCachedAssets();
-						AssetDownloaders.heroImageDownloader?.InvalidateCachedAssets();
+        //game started
+        Helper.VerifyHearthstonePath();
 
-						var ok = Helper.EnsureClientLogConfig();
-						var logConfigUpdated = await UpdateLogConfigForRunningClient();
-						if(!ok || logConfigUpdated)
-						{
-							ShowRestartRequiredMessageAsync().Forget();
-							Overlay.ShowRestartRequiredWarning();
-						}
-						Game.CurrentRegion = Region.EU;
-						if(Game.CurrentRegion != Region.UNKNOWN)
-						{
+        Helper.UpdateCardLanguage();
+
+        AssetDownloaders.cardImageDownloader?.InvalidateCachedAssets();
+        AssetDownloaders.cardTileDownloader?.InvalidateCachedAssets();
+        AssetDownloaders.cardPortraitDownloader?.InvalidateCachedAssets();
+        AssetDownloaders.heroImageDownloader?.InvalidateCachedAssets();
+
+        var ok = Helper.EnsureClientLogConfig();
+        var logConfigUpdated = await UpdateLogConfigForRunningClient();
+
+        if(!ok || logConfigUpdated)
+        {
+                ShowRestartRequiredMessageAsync().Forget();
+                Overlay.ShowRestartRequiredWarning();
+        }
+
+        Log.Info("PROTON TRACE 07: Before forcing EU");
+
+        Game.CurrentRegion = Region.EU;
+
+        Log.Info("PROTON TRACE 08: Region set to EU");
+
+        if(Game.CurrentRegion != Region.UNKNOWN)
+        {
 							BackupManager.Run();
 							Game.MetaData.HearthstoneBuild = null;
 						}
