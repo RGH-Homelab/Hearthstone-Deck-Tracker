@@ -487,9 +487,9 @@ Log.Info("PROTON TRACE 24: Before EnsureLatestCardDefs");
 CardDefsManager.EnsureLatestCardDefs();
 Log.Info("PROTON TRACE 25: After EnsureLatestCardDefs");
 					}
-					Log.Info("PROTON TRACE 26: Before Overlay.UpdateVisibility");
-Overlay.UpdateVisibility();
-Log.Info("PROTON TRACE 27: After Overlay.UpdateVisibility");
+					Log.Info("PROTON TRACE 26: Skipping Overlay.UpdateVisibility for Proton");
+// Overlay.UpdateVisibility();
+Log.Info("PROTON TRACE 27: Overlay.UpdateVisibility skipped");
 
 var gameStarted = !Game.IsRunning;
 
