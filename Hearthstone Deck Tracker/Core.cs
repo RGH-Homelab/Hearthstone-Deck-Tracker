@@ -397,14 +397,14 @@ namespace Hearthstone_Deck_Tracker
 		private static async void UpdateOverlayAsync()
 		{
 #if(!SQUIRREL)
-			if(Config.Instance.CheckForUpdates)
-				Updater.CheckForUpdates(true);
+                // Disabled for Proton compatibility test build.
+                // Custom portable builds must not invoke the HDT updater.
 #endif
 			var hsForegroundChanged = false;
 			while(_updateOverlay)
 			{
-				if(Config.Instance.CheckForUpdates)
-					Updater.CheckForUpdates();
+				// Disabled for Proton compatibility test build.
+                                // Updater.CheckForUpdates();
 				if(User32.GetHearthstoneWindow() != IntPtr.Zero)
 				{
 					if(Game.CurrentRegion == Region.UNKNOWN)
