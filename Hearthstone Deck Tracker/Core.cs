@@ -448,21 +448,44 @@ if(Game.CurrentRegion == Region.UNKNOWN)
         Log.Info("PROTON TRACE 08: Region set to EU");
 
         if(Game.CurrentRegion != Region.UNKNOWN)
-        {
-							BackupManager.Run();
-							Game.MetaData.HearthstoneBuild = null;
-						}
-						//Watchers.ExperienceWatcher.Run();
-						Watchers.SceneWatcher.Run();
-						Watchers.UiWatcher.Run();
+{
+        Log.Info("PROTON TRACE 09: Before BackupManager");
+        BackupManager.Run();
+        Log.Info("PROTON TRACE 10: After BackupManager");
 
-						Remote.Config.Load();
-						Remote.Mercenaries.Load();
-						Remote.LiveSecrets.Load();
+        Game.MetaData.HearthstoneBuild = null;
+        Log.Info("PROTON TRACE 11: HearthstoneBuild reset");
+}
 
-						Reflection.StartIpcClient();
+//Watchers.ExperienceWatcher.Run();
 
-						CardDefsManager.EnsureLatestCardDefs();
+Log.Info("PROTON TRACE 12: Before SceneWatcher");
+Watchers.SceneWatcher.Run();
+Log.Info("PROTON TRACE 13: After SceneWatcher");
+
+Log.Info("PROTON TRACE 14: Before UiWatcher");
+Watchers.UiWatcher.Run();
+Log.Info("PROTON TRACE 15: After UiWatcher");
+
+Log.Info("PROTON TRACE 16: Before Remote.Config.Load");
+Remote.Config.Load();
+Log.Info("PROTON TRACE 17: After Remote.Config.Load");
+
+Log.Info("PROTON TRACE 18: Before Remote.Mercenaries.Load");
+Remote.Mercenaries.Load();
+Log.Info("PROTON TRACE 19: After Remote.Mercenaries.Load");
+
+Log.Info("PROTON TRACE 20: Before Remote.LiveSecrets.Load");
+Remote.LiveSecrets.Load();
+Log.Info("PROTON TRACE 21: After Remote.LiveSecrets.Load");
+
+Log.Info("PROTON TRACE 22: Before Reflection.StartIpcClient");
+Reflection.StartIpcClient();
+Log.Info("PROTON TRACE 23: After Reflection.StartIpcClient");
+
+Log.Info("PROTON TRACE 24: Before EnsureLatestCardDefs");
+CardDefsManager.EnsureLatestCardDefs();
+Log.Info("PROTON TRACE 25: After EnsureLatestCardDefs");
 					}
 					Overlay.UpdateVisibility(); // Always run, this handles the game being in background, etc
 
