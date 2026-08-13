@@ -487,23 +487,49 @@ Log.Info("PROTON TRACE 24: Before EnsureLatestCardDefs");
 CardDefsManager.EnsureLatestCardDefs();
 Log.Info("PROTON TRACE 25: After EnsureLatestCardDefs");
 					}
-					Overlay.UpdateVisibility(); // Always run, this handles the game being in background, etc
+					Log.Info("PROTON TRACE 26: Before Overlay.UpdateVisibility");
+Overlay.UpdateVisibility();
+Log.Info("PROTON TRACE 27: After Overlay.UpdateVisibility");
 
-					var gameStarted = !Game.IsRunning;
-					if(gameStarted)
-					{
-						Overlay.HookGameWindow();
-						Overlay.UpdatePosition(); // Only needs to be called once, HookGameWindow will trigger subsequent position updates.
-						Overlay.Update(true);
-					}
+var gameStarted = !Game.IsRunning;
 
-					if(Overlay.IsContentVisible)
-						Overlay.UpdateBattlegroundsOverlay();
+Log.Info($"PROTON TRACE 28: gameStarted = {gameStarted}");
 
-					TrayIcon.MenuItemStartHearthstone.Visible = false;
+if(gameStarted)
+{
+        Log.Info("PROTON TRACE 29: Before Overlay.HookGameWindow");
+        Overlay.HookGameWindow();
+        Log.Info("PROTON TRACE 30: After Overlay.HookGameWindow");
 
-					Game.IsRunning = true;
-					GameIsRunningChanged?.Invoke(true);
+        Log.Info("PROTON TRACE 31: Before Overlay.UpdatePosition");
+        Overlay.UpdatePosition();
+        Log.Info("PROTON TRACE 32: After Overlay.UpdatePosition");
+
+        Log.Info("PROTON TRACE 33: Before Overlay.Update(true)");
+        Overlay.Update(true);
+        Log.Info("PROTON TRACE 34: After Overlay.Update(true)");
+}
+
+Log.Info($"PROTON TRACE 35: Overlay.IsContentVisible = {Overlay.IsContentVisible}");
+
+if(Overlay.IsContentVisible)
+{
+        Log.Info("PROTON TRACE 36: Before Overlay.UpdateBattlegroundsOverlay");
+        Overlay.UpdateBattlegroundsOverlay();
+        Log.Info("PROTON TRACE 37: After Overlay.UpdateBattlegroundsOverlay");
+}
+
+Log.Info("PROTON TRACE 38: Before TrayIcon update");
+TrayIcon.MenuItemStartHearthstone.Visible = false;
+Log.Info("PROTON TRACE 39: After TrayIcon update");
+
+Log.Info("PROTON TRACE 40: Before Game.IsRunning");
+Game.IsRunning = true;
+Log.Info("PROTON TRACE 41: After Game.IsRunning");
+
+Log.Info("PROTON TRACE 42: Before GameIsRunningChanged");
+GameIsRunningChanged?.Invoke(true);
+Log.Info("PROTON TRACE 43: After GameIsRunningChanged");
 
 					// ContentVisibility depends on Game.IsRunning, so notify only after it is set.
 					if(gameStarted)
