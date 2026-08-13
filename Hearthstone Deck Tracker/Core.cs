@@ -426,7 +426,7 @@ namespace Hearthstone_Deck_Tracker
 							ShowRestartRequiredMessageAsync().Forget();
 							Overlay.ShowRestartRequiredWarning();
 						}
-						Game.CurrentRegion = await Helper.GetCurrentRegion();
+						Game.CurrentRegion = Region.EU;
 						if(Game.CurrentRegion != Region.UNKNOWN)
 						{
 							BackupManager.Run();
